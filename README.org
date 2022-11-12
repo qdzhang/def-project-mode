@@ -1,0 +1,30 @@
+* def-project-mode
+
+Extracted from Doom Emacs. See the docstring of =def-project-model!= for the comprehensive documents.
+** Examples
+*** Hugo project
+Use =def-project-mode!= to define a new project minor mode called
+=+web-hugo-mode=. When you are working in a project whose structures are like =:files=,
+the =+web-hugo-mode= will be activated. Then the commands in  =:on-enter=
+keyword will be evaluated.
+
+#+begin_src elisp
+(def-project-mode! +web-hugo-mode
+  :modes '(web-mode js-mode)
+  :files (and (or "config.toml" "config.yaml" "theme.toml")
+              (or "layouts/")
+              (or "content/")
+              (or "archetypes/"))
+  :on-enter
+  (when (eq major-mode 'web-mode)
+    (web-mode-set-engine "go")))
+#+end_src
+*** Django project
+#+begin_src elisp
+(def-project-mode! +web-django-mode
+  :modes '(web-mode python-mode)
+  :files ("manage.py")
+  :on-enter
+  (when (derived-mode-p 'web-mode)
+    (web-mode-set-engine "django")))
+#+end_src
